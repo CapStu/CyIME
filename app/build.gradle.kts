@@ -189,7 +189,7 @@ android {
     androidResources.ignoreAssetsPatterns.add("*.traineddata")
     // The elder package carries no Japanese or Spanish dictionaries or schemas (elder-pack-spec.md).
     if (providers.gradleProperty("elderEdition").orNull == "true")
-        listOf("<dir>rime_japanese", "<dir>rime_spanish", "<dir>spanish").forEach { androidResources.ignoreAssetsPatterns.add(it) }
+        listOf("<dir>rime_japanese", "<dir>rime_spanish", "<dir>spanish", "<dir>rime_italian", "<dir>italian").forEach { androidResources.ignoreAssetsPatterns.add(it) }
     ndkVersion = "29.0.14206865"
 
     // F-Droid 一致性验证：不在 APK 中写入依赖元数据（Dependency metadata 签名块）。

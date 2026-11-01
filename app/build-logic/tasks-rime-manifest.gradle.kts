@@ -9,6 +9,7 @@ val roots = listOf(
     "rime_japanese" to layout.buildDirectory.dir("generated/japanese-assets/rime_japanese").get().asFile,
     "rime_japanese" to file("src/main/assets/rime_japanese"),
     "rime_spanish" to file("src/main/assets/rime_spanish"),
+    "rime_italian" to file("src/main/assets/rime_italian"),
 )
 // The elder package leaves the Japanese and Spanish assets out of the APK, so out of the manifest too.
 val elder = providers.gradleProperty("elderEdition").orNull == "true"
@@ -19,7 +20,7 @@ val prepareRimeManifest by tasks.registering {
     outputs.dir(manifestOutput)
     doLast {
         val entries = sortedMapOf<String, String>()
-        for ((assetRoot, root) in roots) if (!(elder && assetRoot in setOf("rime_japanese", "rime_spanish"))) root.walkTopDown().filter { it.isFile }.forEach { source ->
+        for ((assetRoot, root) in roots) if (!(elder && assetRoot in setOf("rime_japanese", "rime_spanish", "rime_italian"))) root.walkTopDown().filter { it.isFile }.forEach { source ->
             val relative = source.relativeTo(root).invariantSeparatorsPath
             // 长句重排已停用，两种包都不带这个模型（与 build.gradle.kts 的资源忽略规则一致）。
             if (assetRoot == "rime_chinese" && relative == "t9_sentence.onnx") return@forEach

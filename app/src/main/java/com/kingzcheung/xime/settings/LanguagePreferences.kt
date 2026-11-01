@@ -55,6 +55,7 @@ object LanguagePreferences {
         val bundled = when (language) {
             InputLanguage.JAPANESE -> JapaneseSchemas.ids
             InputLanguage.SPANISH -> SpanishSchemas.ids
+            InputLanguage.ITALIAN -> ItalianSchemas.ids
             else -> null
         }
         if (bundled != null) {

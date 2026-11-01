@@ -182,9 +182,13 @@ class PredictionManager(
     
     suspend fun getEnglishAssociations(text: String, limit: Int = MAX_ASSOCIATION_COUNT): List<String> {
         return try {
-            if (completionLanguage() == com.kingzcheung.xime.settings.InputLanguage.SPANISH)
-                com.kingzcheung.xime.association.SpanishCompletion.complete(context, text, limit)
-            else AssociationService.getAssociations(context, text, true, limit)
+            when (completionLanguage()) {
+                com.kingzcheung.xime.settings.InputLanguage.SPANISH ->
+                    com.kingzcheung.xime.association.SpanishCompletion.complete(context, text, limit)
+                com.kingzcheung.xime.settings.InputLanguage.ITALIAN ->
+                    com.kingzcheung.xime.association.ItalianCompletion.complete(context, text, limit)
+                else -> AssociationService.getAssociations(context, text, true, limit)
+            }
         } catch (e: Exception) {
             Log.e(TAG, "English association failed", e)
             emptyList()

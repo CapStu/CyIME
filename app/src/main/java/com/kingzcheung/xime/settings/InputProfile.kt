@@ -3,17 +3,18 @@ package com.kingzcheung.xime.settings
 /** Product language, never a keyboard shape or a recognizer. */
 enum class InputLanguage(val id: String, val displayName: String) {
     CHINESE("zh", "中文"), JAPANESE("ja", "日语"), ENGLISH("en", "英文"), SPANISH("es", "西班牙语"),
+    ITALIAN("it", "意大利语"),
     UNSPECIFIED("und", "未标注语言");
 
     /** Latin languages typed letter by letter straight into the editor, with word completions above. */
-    val typesLettersDirectly: Boolean get() = this == ENGLISH || this == SPANISH
+    val typesLettersDirectly: Boolean get() = this == ENGLISH || this == SPANISH || this == ITALIAN
 
     companion object {
         /** The elder package offers no Japanese or Spanish anywhere; see docs/development/elder-pack-spec.md. */
         val supported = if (com.kingzcheung.xime.BuildConfig.ELDER) listOf(CHINESE, ENGLISH)
-            else listOf(CHINESE, JAPANESE, ENGLISH, SPANISH)
+            else listOf(CHINESE, JAPANESE, ENGLISH, SPANISH, ITALIAN)
         /** Languages a shipped speech recognizer can transcribe. Spanish has none yet. */
-        val speech: List<InputLanguage> get() = supported.filterNot { it == SPANISH }
+        val speech: List<InputLanguage> get() = supported.filterNot { it == SPANISH || it == ITALIAN }
         fun fromId(id: String): InputLanguage? = entries.firstOrNull { it.id == id }
         /** Compatibility boundary for stored Rime IDs. New business code uses InputProfile. */
         fun forSchema(id: String): InputLanguage = InputProfiles.describe(id).language
@@ -136,7 +137,7 @@ object InputProfiles {
 
     private fun describeBackend(id: String): InputProfile {
         val inputScheme = when {
-            id == InputModes.ENGLISH || id == SpanishSchemas.ID -> InputScheme.DIRECT
+            id == InputModes.ENGLISH || id == SpanishSchemas.ID || id == ItalianSchemas.ID -> InputScheme.DIRECT
             id in pinyinIds || CustomKeyboardLayouts.isCustom(id) -> InputScheme.PINYIN
             id in doublePinyinIds || DoublePinyinSchemes.isGenerated(id) -> InputScheme.DOUBLE_PINYIN
             id in wubiIds -> InputScheme.WUBI
@@ -151,6 +152,7 @@ object InputProfiles {
         val inputLanguage = when {
             id == InputModes.ENGLISH -> InputLanguage.ENGLISH
             id == SpanishSchemas.ID -> InputLanguage.SPANISH
+            id == ItalianSchemas.ID -> InputLanguage.ITALIAN
             inputScheme in setOf(InputScheme.ROMAJI, InputScheme.KANA) -> InputLanguage.JAPANESE
             inputScheme in setOf(InputScheme.PINYIN, InputScheme.DOUBLE_PINYIN, InputScheme.WUBI,
                 InputScheme.WUBI_PINYIN, InputScheme.STROKE, InputScheme.ZHUYIN, InputScheme.CANGJIE) || id == "handwriting" -> InputLanguage.CHINESE
@@ -184,7 +186,8 @@ object InputProfiles {
 
     /** Actual layout bindings win over built-in defaults, including an explicitly unbound schema. */
     fun resolveLayout(section: String?, custom: CustomKeyboardLayout? = null): InputLayout = when (section) {
-        "qwerty", "qwerty_en", "qwerty_japanese", "qwerty_spanish" -> InputLayout(section, "26键", LayoutKind.ALPHABETIC)
+        "qwerty", "qwerty_en", "qwerty_japanese", "qwerty_spanish", "qwerty_italian" ->
+            InputLayout(section, "26键", LayoutKind.ALPHABETIC)
         // 仓颉只是键帽换成字根，仍是中文的 26 键：同一个布局，方案行里与拼音、双拼、五笔并列。
         "qwerty_cangjie" -> InputLayout.QWERTY
         "t9" -> InputLayout.T9

@@ -1769,8 +1769,8 @@ object KeysConfigHelper {
      * 西班牙语键盘：长按元音和 n 总是弹出 á é í ó ú ü ñ（打西语离不开重音），不受「长按弹出字母气泡」开关影响；
      * 在它上面切到英文时照英文键盘的规则。
      */
-    fun accentLongPress(isAsciiMode: Boolean): Boolean =
-        !isAsciiMode && InputLanguage.forSchema(_activeSchemaId) == InputLanguage.SPANISH
+    fun accentLongPress(isAsciiMode: Boolean): Boolean = !isAsciiMode &&
+        InputLanguage.forSchema(_activeSchemaId) in setOf(InputLanguage.SPANISH, InputLanguage.ITALIAN)
 
     /** 获取某个按键的手势配置。 */
     fun getKeyGesture(key: String): KeyGestureConfig? = getKeyGesture(key, false)
@@ -1780,9 +1780,12 @@ object KeysConfigHelper {
         val config = if (isAsciiMode) _keyGestureConfigEn.value else _keyGestureConfig.value
         val normalized = key.lowercase()
         val profile = InputProfiles.current(_activeSchemaId, isAsciiMode)
-        if (profile.language !in setOf(InputLanguage.CHINESE, InputLanguage.ENGLISH, InputLanguage.SPANISH)) return config[normalized]
+        if (profile.language !in setOf(InputLanguage.CHINESE, InputLanguage.ENGLISH,
+                InputLanguage.SPANISH, InputLanguage.ITALIAN)) return config[normalized]
         // 西班牙语键盘用英文键盘的角标（同一位置同一个半角符号）；多出来的 ñ 键不在 26 格里，不带角标。
-        val english = isAsciiMode || profile.language == InputLanguage.SPANISH
+        // 西语、意语都用英文键盘的角标（同一位置同一个半角符号）：意语在 a–z 之外没有专有字母，
+        // 上下角标跟英文一致才不会只有一半。见 docs 的「角标」一节。
+        val english = isAsciiMode || profile.language in setOf(InputLanguage.SPANISH, InputLanguage.ITALIAN)
         val custom = letterLayout(_activeSchemaId, isAsciiMode)
         // 所有字母布局的角标都由下面两条规则出，不再各布局各配一套（用户 10-30：模式太多难免疏忽，统一）。
         return when (profile.layout.kind) {
