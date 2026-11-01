@@ -704,7 +704,10 @@ internal class ImeKeyRouter(private val service: XimeInputMethodService) {
             val spanish = service.uiState.value.let {
                 !it.isAsciiMode && it.inputProfile.language == com.kingzcheung.xime.settings.InputLanguage.SPANISH
             }
-            if (english && isDirectLetter(key, spanish)) {
+            val italian = service.uiState.value.let {
+                !it.isAsciiMode && it.inputProfile.language == com.kingzcheung.xime.settings.InputLanguage.ITALIAN
+            }
+            if (english && isDirectLetter(key, spanish, italian)) {
                 val next = withEditor {
                     // Clear and commit in the same Main visit, including when the
                     // previous letter already has completions on screen.

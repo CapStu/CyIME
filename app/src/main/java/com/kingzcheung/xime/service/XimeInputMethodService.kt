@@ -1898,6 +1898,7 @@ class XimeInputMethodService : InputMethodService(), LifecycleOwner, SavedStateR
                             val hardwareLanguage = if (state.isAsciiMode) "EN" else when (state.inputProfile.language) {
                                 com.kingzcheung.xime.settings.InputLanguage.ENGLISH -> "EN"
                                 com.kingzcheung.xime.settings.InputLanguage.SPANISH -> "ES"
+                                com.kingzcheung.xime.settings.InputLanguage.ITALIAN -> "IT"
                                 com.kingzcheung.xime.settings.InputLanguage.CHINESE -> "中"
                                 com.kingzcheung.xime.settings.InputLanguage.JAPANESE -> "あ"
                                 else -> state.inputProfile.language.displayName
@@ -2021,6 +2022,7 @@ class XimeInputMethodService : InputMethodService(), LifecycleOwner, SavedStateR
                                 amplitude = { voiceAmplitudeState.floatValue },
                                 languageLabel = if (pillEnglish) "EN" else when (state.inputProfile.language) {
                                     com.kingzcheung.xime.settings.InputLanguage.SPANISH -> "ES"
+                                    com.kingzcheung.xime.settings.InputLanguage.ITALIAN -> "IT"
                                     com.kingzcheung.xime.settings.InputLanguage.CHINESE -> "中"
                                     com.kingzcheung.xime.settings.InputLanguage.JAPANESE -> "あ"
                                     else -> state.inputProfile.language.displayName

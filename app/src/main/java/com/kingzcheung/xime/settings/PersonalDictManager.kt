@@ -195,7 +195,7 @@ object PersonalDictManager {
         // 仓颉同理：短语的拼音码在仓颉里是别的字的码（nh 是 弓竹），会抢在码表前面。
         if (InputProfiles.describe(schemaId).scheme in setOf(InputScheme.ZHUYIN, InputScheme.CANGJIE)) return
         // 西班牙语的字母不进 Rime，中文短语挂上去也用不到。
-        if (InputProfiles.describe(schemaId).language == InputLanguage.SPANISH) return
+        if (InputProfiles.describe(schemaId).language in setOf(InputLanguage.SPANISH, InputLanguage.ITALIAN)) return
         // 个人词库合并规则已移除：清理旧版本写入的 merged 词典引用，
         // 让 librime 按 schema 原声明编译原始词典名（如 pinyin_simp.table.bin），
         // 恢复 wubi86_pinyin 等方案的 reverse_lookup 拼音反查。

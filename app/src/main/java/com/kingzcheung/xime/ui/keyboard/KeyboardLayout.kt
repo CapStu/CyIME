@@ -1916,7 +1916,9 @@ internal fun commitLongPressChoice(label: String, onCommitText: ((String) -> Uni
     accentLetters: Boolean = false) {
     // 西班牙语键盘长按出的 á、ñ 也是字母：像点按一样接进正在打的词，补全才认得出整个词。
     val letter = label.length == 1 && (label[0] in 'a'..'z' ||
-        accentLetters && label[0].isLowerCase() && label[0] in com.kingzcheung.xime.association.SpanishLexicon.EXTRA_LETTERS)
+        accentLetters && label[0].isLowerCase() &&
+            (label[0] in com.kingzcheung.xime.association.SpanishLexicon.EXTRA_LETTERS ||
+                label[0] in com.kingzcheung.xime.association.ItalianLexicon.EXTRA_LETTERS))
     if (letter) onKeyPress(label) else (onCommitText ?: onKeyPress)(label)
 }
 
