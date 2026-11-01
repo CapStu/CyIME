@@ -41,7 +41,8 @@ class InputModesTest {
     @Test fun independentLanguageOrderKeepsTheRememberedInputMode() {
         // 这是所有语言的排位（含未开启的），显示时 languageOrder(context) 再只留已开启的。
         val order = InputModes.languageOrder(listOf("en", "ja", "ja", "unknown"))
-        assertEquals(listOf(InputLanguage.ENGLISH, InputLanguage.JAPANESE, InputLanguage.CHINESE, InputLanguage.SPANISH), order)
+        assertEquals(listOf(InputLanguage.ENGLISH, InputLanguage.JAPANESE, InputLanguage.CHINESE, InputLanguage.SPANISH,
+            InputLanguage.ITALIAN), order)
         val choices = InputModes.languageChoices(modes, "rime_ice", mapOf(InputLanguage.JAPANESE to "japanese_kana"), order)
         assertEquals(listOf(InputModes.ENGLISH, "japanese_kana", "rime_ice"), choices.map { it.schemaId })
         assertEquals(listOf("rime_ice", "t9_pinyin"), InputModes.available(modes, InputModes.defaultModeOrder).take(2).map { it.schemaId })
@@ -49,7 +50,8 @@ class InputModesTest {
     }
 
     @Test fun japaneseComesAfterEnglishByDefaultAndWhenSwitchedOnLater() {
-        assertEquals(listOf(InputLanguage.CHINESE, InputLanguage.ENGLISH, InputLanguage.JAPANESE, InputLanguage.SPANISH),
+        assertEquals(listOf(InputLanguage.CHINESE, InputLanguage.ENGLISH, InputLanguage.JAPANESE, InputLanguage.SPANISH,
+            InputLanguage.ITALIAN),
             InputModes.languageOrder(emptyList()))
         // A saved order from older versions put Japanese before English; switching Japanese on moves it last.
         // 未开启的西班牙语只占排位，开启时会再排到最后。
