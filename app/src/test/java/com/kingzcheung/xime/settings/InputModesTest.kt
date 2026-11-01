@@ -55,9 +55,9 @@ class InputModesTest {
             InputModes.languageOrder(emptyList()))
         // A saved order from older versions put Japanese before English; switching Japanese on moves it last.
         // 未开启的西班牙语只占排位，开启时会再排到最后。
-        assertEquals(listOf("zh", "en", "es", "ja"), InputModes.orderWithLanguageLast(listOf("zh", "ja", "en"), InputLanguage.JAPANESE))
+        assertEquals(listOf("zh", "en", "es", "it", "ja"), InputModes.orderWithLanguageLast(listOf("zh", "ja", "en"), InputLanguage.JAPANESE))
         // 西班牙语后开启，同样排到已开启语言后面。
-        assertEquals(listOf("zh", "en", "ja", "es"), InputModes.orderWithLanguageLast(listOf("zh", "en", "ja"), InputLanguage.SPANISH))
+        assertEquals(listOf("zh", "en", "ja", "it", "es"), InputModes.orderWithLanguageLast(listOf("zh", "en", "ja"), InputLanguage.SPANISH))
     }
 
     /** 没排过序时字母排列（Colemak、Cyletix10、Typewise、QWJRTK、自定义）排在其他方案后面，排过的不动。 */
