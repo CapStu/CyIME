@@ -51,6 +51,8 @@ python tools/ime_lab/t9_replay.py run --fixture chat.fixture.json --output .code
 
 ## 速度门禁：工作量与耗时
 
+[真机按键延迟与纠错冒烟](input-quality-latency-20261101.md)另外测量松手到候选成帧，逐键核对样本并报告超时键。这里的同源引擎比较用于判断词库、解码及排序改动对工作量和候选质量的影响。
+
 电脑端引擎以 `-DCYIME_T9_WORK_COUNTERS=ON` 编译（只在主机构建中打开；安卓构建不定义该宏，计数语句为空，生成源码与 APK 不变）。每个按键行增加：
 
 - `work`：按键与 flush 期间回放线程的计数，包括词库 `Lookup`/`LookupAll` 调用、起点与表查询、表遍历节点与边、四字以上尾码匹配步数、取得的条目块与条目、用户词库查找与遍历、合并前后条目、束搜索评估/淘汰/插入、语法 `Query` 与 `GramDb::Lookup`、整句先验、解码结果缓存命中与帧复用。计数只累加，不参与任何选择。

@@ -36,7 +36,7 @@ App：`app/build.gradle.kts` 版本 1.12.0 / 20261123（下一轮兼容修复升
 
 ## 4. 数据、模型与工具
 
-- WSL `~/cyime-ngram/`：`vocab.tsv`（九键词库 187 万词）、`train.txt`（LCCC，Han 串）、`subs-s.txt`（字幕转简体）、`valid*.txt`；模型 `model-v3-ls-tri.lm`（采用）、`model-v3-{l-bi,l-tri,ls-bi}.lm`、剪枝版 `model-v4-ls-p{1e-8,5e-8,2e-7}.lm`、加权版 `model-v5-w12.lm`（560MB）/`w21`（918MB，均未评测）；构建器二进制 `ngram_build3/4/5`。
+- WSL `~/cyime-ngram/`（2026-10-28 已清理；语料与日志存 `D:/CyIME-Data/corpus/`（`*.gz`），采用的模型存 `D:/CyIME-Data/models/`，构建器由 `tools/ime_lab/ngram/*.cc` 重编；脚本工作区改为 `~/cyime-work/ngram`）当时内容：`vocab.tsv`（九键词库 187 万词）、`train.txt`（LCCC，Han 串）、`subs-s.txt`（字幕转简体）、`valid*.txt`；模型 `model-v3-ls-tri.lm`（采用）、`model-v3-{l-bi,l-tri,ls-bi}.lm`、剪枝版 `model-v4-ls-p{1e-8,5e-8,2e-7}.lm`、加权版 `model-v5-w12.lm`（560MB）/`w21`（918MB，均未评测）；构建器二进制 `ngram_build3/4/5`。
 - 语料许可：LCCC-base 为 MIT；**OpenSubtitles（OPUS）未写明许可**，正式发布前须替换或确认。
 - 工具 `tools/ime_lab/ngram/`：`prepare_data.py`（corpus/text/vocab/dev）、`ngram_build.cc`、`ngram_query.py`（逐项打印对数概率，排查最有用）、`compare_runs.py`、`category_report.py`、`gen_tests.py`（DeepSeek 生成测试句；密钥运行时从 `~/.cline/data/secrets.json` 读，绝不打印或保存）、`PinyinReplay.java`（26 键全拼对照）、`ChunkReplay.java`＋`chunk_cases.py`（左侧上文实验）、`eval_runs.sh`、`final_eval.sh`（全部测试集＋速度门禁会话）、`tune_next.sh`（见 §5）。
 - 回放：`python3 tools/ime_lab/t9_replay.py run --fixture … --output … --json-jar …`，在 WSL 里 `nice -n 19` 跑；可选资源根 `app/build/generated/t9-ngram/rime_chinese/t9_ngram.lm`（现放着三元组模型，回放会读它；不进 APK）。

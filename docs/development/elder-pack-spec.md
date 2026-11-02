@@ -27,7 +27,7 @@ py -3 -B scripts\packager\cyime_packager.py build --preset 老人包 --bump patc
 | 联想 | predictive-text base 和 small |
 | 声纹 | 字幕分说话人用的 CAM++ 中文声纹模型（27 MB），必须打进包，装上就能分出是谁在说（用户 2026-10-18 要求） |
 
-`assets/bundled-models/` 下只能是这六个目录：ochwpro、paraformer-zh-en-int8、predictive-text-base、predictive-text-small、sensevoice-multilingual-int8、speaker-campplus-zh。
+`assets/bundled-models/` 下只能是这五个目录：ochwpro、paraformer-zh-en-int8、predictive-text-base、sensevoice-multilingual-int8、speaker-campplus-zh。轻量联想（predictive-text-small）不内置，需要时在「扩展 → 模型」下载（11-01 起）。
 
 ## 包里不能有（打包器检查）
 
