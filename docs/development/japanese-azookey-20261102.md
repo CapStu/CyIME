@@ -52,13 +52,16 @@ P95 单键在误差内（20.5–23.3 ms）。另试过把补充词挂在 azooKey
 
 ## 2026-11-03 长音键 ー（コーヒー 打不出来）
 
-用户反馈日语没有长音键、打不出 コーヒー。引擎本身没问题：电脑上经 Rime 插件输入 `ko-hi-`、`kolhil` 首选都是 コーヒー。
-问题在键盘：26 键上 ー 只在 m 键角标、- 在 l 键角标，角标走直接上屏，打着的读音被先上屏，ー 接不进转换。
-做法：日语 26 键加一个长音键，键面 ー、送 `-`，和字母一样进转换（`japaneseChoonpuIsCode`，不当标点上屏）。两种放法：
+用户反馈日语没有长音键、打不出 コーヒー。引擎本身没问题：电脑上经 Rime 插件输入 `ko-hi-`、`kolhil` 首选都是 コーヒー，L 键一直就是长音。
+真正的问题是显示：拼写显示把 l 当成待拼的辅音（`pendingRomajiTail`），ko+L 显示成「こl」，看上去像长音键没了。
+jaroomaji 时代方案的 preedit_format 把 l 写成 ー，换 azooKey 后这条没了。改为 L 当长音时和 - 一样算完整单位（`japaneseLIsLongVowel`）。
 
-- 默认在 L 键右侧（xime.yaml `qwerty_japanese` 中排 10 键，和西班牙语 ñ 一样）；
-- 「26 键 › 长音键代替 Shift」打开后从中排拿掉，左下角 Shift 键点按是 ー，按住满 300 ms 才是按住 Shift（打字母出片假名），
-  按住没打别的键松手照 Shift 点按切换（小写→单次大写→锁定→小写）。
+另外按用户 11-03 的要求，「26 键 › 长音键」三选一（带图例），默认不变：
 
-m、l 键角标不变。日语选了 Colemak 等别的字母排列时，中排没有 ー（排列自带的行），可用 Shift 那种放法。
-测试：`JapaneseChoonpuKeyTest`、`JapaneseChoonpuKeyRenderTest`（设 `CYIME_RENDER_OUT` 出两种放法的手机、平板图）。云端没有安卓 SDK，未编译未跑，未真机验收。
+- L 键（默认）：L 就是长音，不加键；
+- L 右侧单独键：l 后面加一个 ー 键（送 `-` 进转换，`japaneseChoonpuIsCode`），L 打回字母 l（la → ぁ）；
+- 代替 Shift：Shift 键点按是 ー，按住满 300 ms 才是 Shift（打字母出片假名），按住没打别的键松手照 Shift 点按切换；L 打回字母 l。
+
+后两种由引擎选项 `_cyime_l_letter` 告诉翻译器 l 不再当 ー（`ImeSessionController.applyCandidateOptions` 每键前写），显示和退格读同一个值。
+m、l 键角标不变（角标是直接上屏）。
+测试：`JapaneseRomajiPreeditTest`、`JapaneseChoonpuKeyTest`、`JapaneseChoonpuKeyRenderTest`（设 `CYIME_RENDER_OUT` 出三种放法的手机、平板图和设置页图例）。未真机验收。
