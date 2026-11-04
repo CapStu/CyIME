@@ -4,6 +4,8 @@ package com.kingzcheung.xime.model
 object BuiltinModelCatalog {
     /** CyIME 自己 Release 里的原样转存（许可见该 Release 的 NOTICE-models.txt），海外线路优先。 */
     private const val RELEASE = "https://github.com/Cyletix/CyIME/releases/download/models/"
+    /** 本 fork 自己的 Release（只放上游没有的东西，例如意语词表）。 */
+    private const val FORK_RELEASE = "https://github.com/CapStu/CyIME/releases/download/models/"
     const val SPEAKER_MODEL = "speaker-campplus-zh"
     const val SPEAKER_MODEL_FILE = "3dspeaker_speech_campplus_sv_zh-cn_16k-common.onnx"
     /** 拍照识别（PP-OCRv5 mobile）。轻量版不带，第一次拍照识别时下载；带模型的安装包仍内置在 assets/ocr/ppocr-v5。 */
@@ -88,5 +90,9 @@ object BuiltinModelCatalog {
             versions = listOf(ModelVersion(version = "v1", size = "0.62 MB",
                 files = listOf(ModelFile("cyime-words-ru-v1.txt", RELEASE + "cyime-words-ru-v1.txt", "7a818abbe5e85670b76cdac369453848c664540122cf33112365eae749728177", 654612L,
                     mirrors = listOf(DownloadMirrors.CYIME_MODELSCOPE + "cyime-words-ru-v1.txt")))))),
+        // 意语词表上游 Release 里没有：放在本 fork 的 Release `models`（同一 tag 名、同一文件名）。
+        ModelInfo("words-it", "意大利语补全词表", "意大利语键盘的单词补全，约 3.8 万个常用词。不打重音也能补全：citta → città、perche → perché。", ModelCategory.OTHER,
+            versions = listOf(ModelVersion(version = "v1", size = "0.34 MB",
+                files = listOf(ModelFile("cyime-words-it-v1.txt", FORK_RELEASE + "cyime-words-it-v1.txt", "5b40a01a3f0ddad91491f1adc8ef89a9e97af30bb119b83e9c1145106d2f64a4", 356149L))))),
     )
 }

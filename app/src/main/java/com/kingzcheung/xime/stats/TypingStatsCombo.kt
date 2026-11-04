@@ -42,7 +42,7 @@ data class TypingStatsCombo(val id: String, val label: String) {
         /** 各语言自己的 26 键（qwerty_en、qwerty_spanish……）是同一种布局，合成 qwerty。 */
         private fun normalizeLayout(id: String): String {
             val c = clean(id)
-            return if (c == "qwerty_en" || c == "qwerty_japanese" || c == "qwerty_spanish" || c == "qwerty_cangjie") "qwerty" else c
+            return if (c == "qwerty_en" || c == "qwerty_japanese" || c == "qwerty_spanish" || c == "qwerty_italian" || c == "qwerty_cangjie") "qwerty" else c
         }
 
         private fun clean(id: String): String =

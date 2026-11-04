@@ -35,6 +35,9 @@ class LongPressChoiceTest {
         // 德语 ß、俄语 ё 同样接进词里；韩语长按的 ㄲ 交给组字。
         assertEquals("key" to "ß", route("ß", com.kingzcheung.xime.settings.LetterLanguage.GERMAN.extraLetters))
         assertEquals("key" to "ё", route("ё", com.kingzcheung.xime.settings.LetterLanguage.RUSSIAN.extraLetters))
+        // 意语重音字母同样接进词里；« » 是符号，直接上屏。
+        assertEquals("key" to "à", route("à", com.kingzcheung.xime.settings.LetterLanguage.ITALIAN.extraLetters))
+        assertEquals("commit" to "«", route("«", com.kingzcheung.xime.settings.LetterLanguage.ITALIAN.extraLetters))
         assertEquals("key" to "ㄲ", route("ㄲ", com.kingzcheung.xime.settings.LetterLanguage.KOREAN.extraLetters))
         // 别的语言的字母不算：西班牙语键盘上的 ß 照旧直接上屏。
         assertEquals("commit" to "ß", route("ß", spanish))
