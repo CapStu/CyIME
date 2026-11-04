@@ -86,29 +86,32 @@ val prepareJapaneseDictionaries by tasks.registering {
             }
             val manifest = files.entries.joinToString("") { (path, bytes) -> "$path\u0000${sha256(bytes)}\n" }
             check(sha256(manifest.toByteArray()) == azooKeyDictionaryContentHash) { "azooKey dictionary content mismatch" }
+            // 上游把 louds zip 放在自己的 Release 里，有时还没传上去（fork 的 CI 只能干等）。
+            // 拿不到就退回「只用 pinned azooKey 词典」：日语照常能打，只是没有人名地名的 Mozc 名词。
             val louds = localDirs.map { File(it, loudsZipName) }.firstOrNull { it.isFile && sha256(it) == azooKeyLoudsZipHash }
                 ?: File(targetRoot, "$loudsZipName.download").also { pending ->
                     val urls = listOf("https://github.com/Cyletix/CyIME/releases/download/models/$loudsZipName",
                         "https://www.modelscope.cn/models/Cyletix/cyime-model/resolve/master/$loudsZipName")
-                    val fetched = urls.any { url ->
-                        runCatching { download(url, pending, "azooKey dictionary with Mozc words") }.isSuccess &&
-                            sha256(pending) == azooKeyLoudsZipHash
+                    urls.firstOrNull { url -> runCatching { download(url, pending, "azooKey dictionary with Mozc words") }.isSuccess }
+                }.takeIf { it.isFile && sha256(it) == azooKeyLoudsZipHash }
+            if (louds == null) {
+                logger.warn("$loudsZipName 下载不到（上游 Release / 魔搭都没有），日语词典退回 pinned azooKey，人名地名转不出来。")
+            } else {
+                try {
+                    files.keys.removeAll { it.startsWith("louds/") && it != "louds/charID.chid" }
+                    ZipInputStream(louds.inputStream().buffered()).use { input ->
+                        while (true) {
+                            val entry = input.nextEntry ?: break
+                            if (!entry.isDirectory && entry.name.startsWith("louds/")) files[entry.name] = input.readBytes()
+                        }
                     }
-                    check(fetched) { "$loudsZipName unavailable or SHA-256 mismatch" }
+                } finally {
+                    if (louds.name.endsWith(".download")) louds.delete()
                 }
-            try {
-                files.keys.removeAll { it.startsWith("louds/") && it != "louds/charID.chid" }
-                ZipInputStream(louds.inputStream().buffered()).use { input ->
-                    while (true) {
-                        val entry = input.nextEntry ?: break
-                        if (!entry.isDirectory && entry.name.startsWith("louds/")) files[entry.name] = input.readBytes()
-                    }
-                }
-            } finally {
-                if (louds.name.endsWith(".download")) louds.delete()
             }
             val merged = files.entries.joinToString("") { (path, bytes) -> "$path\u0000${sha256(bytes)}\n" }
-            check(sha256(merged.toByteArray()) == azooKeyMergedDictionaryHash) { "merged azooKey dictionary mismatch" }
+            val mergedHash = sha256(merged.toByteArray())
+            if (louds != null) check(mergedHash == azooKeyMergedDictionaryHash) { "merged azooKey dictionary mismatch" }
             val pending = File(targetRoot, "dictionary.zip.pending")
             ZipOutputStream(pending.outputStream().buffered()).use { output ->
                 output.setLevel(9)
@@ -119,7 +122,7 @@ val prepareJapaneseDictionaries by tasks.registering {
                 }
             }
             java.nio.file.Files.move(pending.toPath(), zip.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
-            version.writeText(azooKeyMergedDictionaryHash)
+            version.writeText(mergedHash)
         } finally {
             archive.delete()
         }
@@ -169,7 +172,12 @@ val prepareAzooKeyLibraries by tasks.registering {
                     runCatching { download(url, pending, "azooKey library $abi") }.isSuccess &&
                         sha256(pending) == hash
                 }
-                check(fetched) { "azooKey library $abi unavailable or SHA-256 mismatch: $name" }
+                if (!fetched) {
+                    // 上游还没把新哈希的 lib 传上去时，别为它卡死整个构建：缺 lib 只是日语退化成罗马字
+                    // （和 x86 32 位一样，见上面注释），别的语言不受影响。缺了要吵一句，不静默。
+                    logger.warn("azooKey library $abi 下载不到（$name 在上游 Release / 魔搭都是 404），日语假名转汉字会退化成罗马字。")
+                    return@forEach
+                }
                 java.nio.file.Files.move(pending.toPath(), target.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
             } finally {
                 pending.delete()
