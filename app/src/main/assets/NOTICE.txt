@@ -82,13 +82,14 @@ derived (counts only, no text) by tools/glide_lab/build_english_bigrams.py from:
   https://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html
 
 ================================================================================
-Spanish, German, French and Russian word lists
+Spanish, German, French, Russian and Italian word lists
 ================================================================================
 
-cyime-words-es-v1.txt, cyime-words-de-v1.txt, cyime-words-fr-v1.txt and cyime-words-ru-v1.txt are the
+cyime-words-es-v1.txt, cyime-words-de-v1.txt, cyime-words-fr-v1.txt, cyime-words-ru-v1.txt and
+cyime-words-it-v1.txt are the
 completion word lists of the letter-by-letter languages (one word per line, most frequent first). They are
 optional market downloads, not part of the APK, built by tools/wordlists/build_words.py:
-- Word frequencies: Hermit Dave, FrequencyWords (content/2018/<es|de|fr|ru>/<lang>_50k.txt, from
+- Word frequencies: Hermit Dave, FrequencyWords (content/2018/<es|de|fr|ru|it>/<lang>_50k.txt, from
   OpenSubtitles 2018), commit 525f9b560de45753a5ea01069454e72e9aa541c6. Code MIT; word lists CC-BY-SA-4.0.
   https://github.com/hermitdave/FrequencyWords
 - Spelling filter only (not shipped): the LibreOffice spelling dictionaries as packaged in the npm modules

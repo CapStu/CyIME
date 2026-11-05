@@ -18,6 +18,7 @@ enum class LetterLanguage(
     val wordsModel: String?,
 ) {
     SPANISH(InputLanguage.SPANISH, "spanish", "ES", "qwerty_spanish", "áéíóúüñÁÉÍÓÚÜÑ", "words-es"),
+    ITALIAN(InputLanguage.ITALIAN, "italian", "IT", "qwerty_italian", "àèéìòùÀÈÉÌÒÙ", "words-it"),
     GERMAN(InputLanguage.GERMAN, "german", "DE", "qwerty_german", "äöüßÄÖÜ", "words-de"),
     FRENCH(InputLanguage.FRENCH, "french", "FR", "qwerty_french",
         "àâæçéèêëîïôœùûüÿÀÂÆÇÉÈÊËÎÏÔŒÙÛÜŸ", "words-fr"),

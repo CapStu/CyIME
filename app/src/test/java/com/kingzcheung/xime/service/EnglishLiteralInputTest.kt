@@ -85,6 +85,24 @@ class EnglishLiteralInputTest {
         assertEquals("Niño", state.pendingEnglishText)
     }
 
+    @Test fun italianAccentsJoinTheWordOnTheItalianKeyboard() {
+        val italian = com.kingzcheung.xime.settings.LetterLanguage.ITALIAN.extraLetters
+        for (letter in listOf("à", "è", "é", "ì", "ò", "ù", "À", "É")) {
+            assertTrue(letter, isDirectLetter(letter, italian))
+            assertFalse(letter, isDirectLetter(letter, ""))
+        }
+        // 西语的 ñ 在意语键盘上不算字母，意语的重音字母在西语键盘上也不算。
+        assertFalse(isDirectLetter("ñ", italian))
+        assertFalse(isDirectLetter("à", com.kingzcheung.xime.settings.LetterLanguage.SPANISH.extraLetters))
+        var state = CandidateState()
+        val editor = StringBuilder()
+        for (letter in listOf("c", "i", "t", "t", "à")) {
+            state = requireNotNull(commitEnglishLetter(state, letter, false, { true }) { editor.append(it); true })
+        }
+        assertEquals("città", editor.toString())
+        assertEquals("città", state.pendingEnglishText)
+    }
+
     @Test fun germanSharpSStaysSharpUnderShiftAndCyrillicTypesDirectly() {
         assertTrue(isDirectLetter("ß", com.kingzcheung.xime.settings.LetterLanguage.GERMAN.extraLetters))
         assertTrue(isDirectLetter("й", com.kingzcheung.xime.settings.LetterLanguage.RUSSIAN.extraLetters))

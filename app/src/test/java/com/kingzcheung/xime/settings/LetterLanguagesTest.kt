@@ -81,8 +81,11 @@ class LetterLanguagesTest {
             assertEquals(file.name, source.length(), file.sizeBytes)
             val hash = MessageDigest.getInstance("SHA-256").digest(source.readBytes()).joinToString("") { "%02x".format(it) }
             assertEquals(file.name, hash, file.sha256)
-            assertTrue(file.name, file.downloadUrl.startsWith("https://github.com/Cyletix/CyIME/releases/download/models/"))
-            assertTrue(file.name, file.mirrors.any { it.startsWith(com.kingzcheung.xime.model.DownloadMirrors.CYIME_MODELSCOPE) })
+            assertTrue(file.name, file.downloadUrl.startsWith("https://github.com/"))
+            // 意语词表上游 Release 没有，放在本 fork 的 Release 里，所以只有上游词表才有魔搭镜像。
+            if (file.downloadUrl.contains("/Cyletix/CyIME/")) {
+                assertTrue(file.name, file.mirrors.any { it.startsWith(com.kingzcheung.xime.model.DownloadMirrors.CYIME_MODELSCOPE) })
+            }
         }
         assertNull(LetterLanguage.KOREAN.wordsModel)
     }
@@ -100,6 +103,7 @@ class LetterLanguagesTest {
         assertEquals(listOf("ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔ", "ㅁㄴㅇㄹㅎㅗㅓㅏㅣ", "ㅋㅌㅊㅍㅠㅜㅡ"), korean.map { it.joinToString("") })
         val expected = mapOf(
             "qwerty_spanish" to mapOf("a" to "á", "e" to "é", "i" to "í", "o" to "ó", "u" to "ú", "n" to "ñ"),
+            "qwerty_italian" to mapOf("a" to "à", "e" to "è", "i" to "ì", "o" to "ò", "u" to "ù"),
             "qwerty_german" to mapOf("a" to "ä", "o" to "ö", "u" to "ü", "s" to "ß"),
             "qwerty_french" to mapOf("e" to "é", "a" to "à", "c" to "ç", "o" to "ô", "u" to "ù", "i" to "î"),
             "jcuken_russian" to mapOf("е" to "ё", "ь" to "ъ"),
@@ -135,7 +139,7 @@ class LetterLanguagesTest {
 
     @Test fun `latin letters carry the english corner symbols and always offer accents`() {
         loadKeyboards()
-        for (letters in listOf(LetterLanguage.SPANISH, LetterLanguage.GERMAN, LetterLanguage.FRENCH)) {
+        for (letters in listOf(LetterLanguage.SPANISH, LetterLanguage.ITALIAN, LetterLanguage.GERMAN, LetterLanguage.FRENCH)) {
             KeysConfigHelper.setActiveKeyboardSchema(letters.schemaId)
             for (key in QwertySwipeSymbols.keys.map(Char::toString)) {
                 val gesture = KeysConfigHelper.getKeyGesture(key, false)

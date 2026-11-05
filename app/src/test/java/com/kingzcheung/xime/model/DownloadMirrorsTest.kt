@@ -28,7 +28,9 @@ class DownloadMirrorsTest {
 
     /** GitHub 在国内常下不动：商店里每个还能下载的文件都要有一条国内线路（魔搭或 HuggingFace 国内镜像）。 */
     @Test fun everyDownloadableModelHasADomesticRoute() {
-        val missing = BuiltinModelCatalog.models.flatMap { model ->
+        // 意语词表放在本 fork 的 Release 里（上游没有这份文件），没有魔搭镜像可配：只有 GitHub 一条线。
+        val forkOnly = setOf("words-it")
+        val missing = BuiltinModelCatalog.models.filterNot { it.id in forkOnly }.flatMap { model ->
             model.versions.filterNot { it.retired }.flatMap { version ->
                 val archive = version.archiveUrl
                 if (archive != null) {
