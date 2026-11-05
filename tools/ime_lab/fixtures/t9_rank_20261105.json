@@ -1,0 +1,193 @@
+{
+  "fixture_version": 1,
+  "id": "t9_rank_20261105",
+  "source_label": "2026-11-05 group report: 3 gave 额, 58333 after 精防肩撞就 gave 觉的",
+  "input_contract": {
+    "language": "zh-Hans",
+    "scheme": "full_pinyin",
+    "layout": "t9"
+  },
+  "pronunciation_review": {
+    "review_status": "provided",
+    "generator": "explicit one-syllable-per-Han readings",
+    "overrides": []
+  },
+  "cases": [
+    {
+      "id": "d01",
+      "text": "的",
+      "pinyin": [
+        "de"
+      ],
+      "keys": "33",
+      "syllable_keys": [
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "d02",
+      "text": "的",
+      "pinyin": [
+        "de"
+      ],
+      "left_context": "纯机体差异，精防肩撞就",
+      "keys": "33",
+      "syllable_keys": [
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "d03",
+      "text": "的",
+      "pinyin": [
+        "de"
+      ],
+      "left_context": "我",
+      "keys": "33",
+      "syllable_keys": [
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "d04",
+      "text": "的",
+      "pinyin": [
+        "de"
+      ],
+      "left_context": "好",
+      "keys": "33",
+      "syllable_keys": [
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "a01",
+      "text": "啊",
+      "pinyin": [
+        "a"
+      ],
+      "left_context": "是",
+      "keys": "2",
+      "syllable_keys": [
+        "2"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "o01",
+      "text": "哦",
+      "pinyin": [
+        "o"
+      ],
+      "left_context": "你",
+      "keys": "6",
+      "syllable_keys": [
+        "6"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "j01",
+      "text": "觉得",
+      "pinyin": [
+        "jue",
+        "de"
+      ],
+      "left_context": "纯机体差异，精防肩撞就",
+      "keys": "58333",
+      "syllable_keys": [
+        "583",
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "j02",
+      "text": "觉得",
+      "pinyin": [
+        "jue",
+        "de"
+      ],
+      "left_context": "就",
+      "keys": "58333",
+      "syllable_keys": [
+        "583",
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "j03",
+      "text": "觉得",
+      "pinyin": [
+        "jue",
+        "de"
+      ],
+      "left_context": "你",
+      "keys": "58333",
+      "syllable_keys": [
+        "583",
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "j04",
+      "text": "觉得",
+      "pinyin": [
+        "jue",
+        "de"
+      ],
+      "left_context": "都",
+      "keys": "58333",
+      "syllable_keys": [
+        "583",
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    },
+    {
+      "id": "j05",
+      "text": "觉得",
+      "pinyin": [
+        "jue",
+        "de"
+      ],
+      "keys": "58333",
+      "syllable_keys": [
+        "583",
+        "33"
+      ],
+      "role": "body",
+      "is_body": true
+    }
+  ],
+  "counts": {
+    "cases": 11,
+    "han_characters": 16,
+    "digit_keypresses": 35,
+    "body_cases": 11,
+    "body_han_characters": 16,
+    "body_digit_keypresses": 35,
+    "by_role": {
+      "body": {
+        "cases": 11,
+        "han_characters": 16
+      }
+    }
+  }
+}
